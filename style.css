@@ -1,0 +1,70 @@
+.parallax {
+    /* The image used */
+    background-image: url("https://images.unsplash.com/photo-1466921583968-f07aa80c526b");
+  
+    /* Set a specific height */
+    height: 100%;
+  
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  
+  .container {
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+  
+  .city-card {
+    margin-bottom: 30px;
+  }
+  
+  .city-name {
+    display: inline-block;
+    margin-right: 10px;
+  }
+  
+  .add-city {
+    float: right;
+  }
+  
+  .current-weather {
+    margin-bottom: 20px;
+  }
+  
+  .temp {
+    font-size: 48px;
+    font-weight: bold;
+  }
+  
+  .description {
+    font-size: 24px;
+    text-transform: capitalize;
+  }
+  
+  .icon {
+    width: 80px;
+    height: 80px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  
+  .forecast li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: none;
+  }
+  
+  .weather-icon {
+    width: 50px;
+    height: 50px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  
