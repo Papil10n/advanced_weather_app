@@ -16,6 +16,14 @@ const cities = {
     lon: 35.0462
   }
 };
+const addButton = document.getElementById("add-new-city");
+const popupForm = document.getElementById("popup-form");
+const closebutton = document.getElementById("close-button");
+const form = popupForm.querySelector("form");
+const cityInput = form.querySelector("#city-input");
+const latitudeInput = form.querySelector("#latitude-input");
+const longitudeInput = form.querySelector("#longitude-input");
+
 
 function getTime() {
     const offset = -2;
@@ -26,33 +34,6 @@ function getTime() {
     document.getElementById("time").innerHTML = timeStr;
   }
   
-  function dragStart(event) {
-    event.dataTransfer.setData("text/plain", event.target.id);
-    event.currentTarget.style.backgroundColor = "lightgray";
-  }
-  
-  function dragEnd(event) {
-    event.currentTarget.style.backgroundColor = "";
-  }
-  
-  function allowDrop(event) {
-    event.preventDefault();
-    event.currentTarget.style.backgroundColor = "lightgray";
-  }
-  
-  function drop(event) {
-    event.preventDefault();
-    const source = event.dataTransfer.getData("text/plain");
-    const sourceCard = document.getElementById(source);
-    const targetCard = event.currentTarget;
-    const targetParent = targetCard.parentNode;
-    const sourceParent = sourceCard.parentNode;
-    targetParent.insertBefore(sourceCard, targetCard.nextSibling);
-    sourceParent.insertBefore(targetCard, sourceCard.nextSibling);
-    event.currentTarget.style.backgroundColor = "";
-  }
-  
-
 // Function to get weather data from WeatherAPI
 async function getWeatherData(city) {
   const url = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${city.lat},${city.lon}&days=5`;
@@ -87,6 +68,19 @@ async function updateWeather(cityId) {
   });
 }
 
+function saveDataToLocalStorage(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+function getDataFromLocalStorage(key) {
+  const data = localStorage.getItem(key);
+  if (data) {
+    return JSON.parse(data);
+  } else {
+    return null;
+  }
+}
+
 // Helper function to get day of week from a number (1-7)
 function getDayOfWeek(day) {
   const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -100,5 +94,80 @@ async function updateAllWeather() {
   }
 }
 
+// Add an event listener to the button
+addButton.addEventListener("click", function(event) {
+  // Show the pop-up form
+  popupForm.style.display = "block";
+
+  const addBtnInForm = document.getElementById("submit-button");
+
+  addBtnInForm.addEventListener("click", function(event) {
+    const city = cityInput.value;
+    const latitude = latitudeInput.value;
+    const longitude = longitudeInput.value;
+
+    createCard(city);
+    cities[city] = {
+      name: 'city',
+      lat: latitude,
+      lon: longitude
+    }
+    updateAllWeather();
+    saveDataToLocalStorage("cities", cities);
+    popupForm.style.display = "none";
+  })
+});
+
+
+// Add an event listener to the Close button
+closebutton.addEventListener("click", function(event) {
+  // Hide the pop-up form
+  popupForm.style.display = "none";
+});
+
+
+function createCard(city) {
+  const newDiv = document.createElement("div");
+
+  // Add the necessary classes and id to the div
+  newDiv.className = "col-md-4";
+  newDiv.innerHTML = `
+    <div class="card city-card" id="${city}">
+      <div class="card-header">
+        <h2 class="city-name">${city}</h2>
+      </div>
+      <div class="card-body">
+        <div class="current-weather">
+          <div class="temp">--°C</div>
+          <div class="description">--</div>
+          <div class="icon"></div>
+        </div>
+        <ul class="list-group list-group-flush forecast">
+          <li class="list-group-item">
+            <div>Today</div>
+            <div class="weather-icon"></div>
+            <div>--°C</div>
+          </li>
+          <li class="list-group-item">
+            <div></div>
+            <div class="weather-icon"></div>
+            <div>--°C</div>
+          </li>
+          <li class="list-group-item">
+            <div></div>
+            <div class="weather-icon"></div>
+            <div>--°C</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  `;
+  console.log(newDiv);
+  // Add the div to the container element
+  const container = document.querySelector(".row");
+  container.appendChild(newDiv);
+}
+
 // Call updateAllWeather on page load
 updateAllWeather();
+setInterval(getTime, 100);

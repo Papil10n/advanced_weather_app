@@ -9,7 +9,26 @@
     <div class="parallax">
         <div class="container">
             <div class="time-zone">
-                <span id="time"></span>
+                <span id="time">--:--:--</span>
+              </div>
+              <div class="add-city-cont">
+                <button id="add-new-city">Add New City</button>
+              </div>
+              <div id="popup-form" class="popup-form">
+                <h2>Add a new city</h2>
+                <button id="close-button">Close</button>
+                <form>
+                  <label for="city-input">City:</label>
+                  <input type="text" id="city-input" name="city"><br>
+              
+                  <label for="latitude-input">Latitude:</label>
+                  <input type="number" id="latitude-input" name="latitude"><br>
+              
+                  <label for="longitude-input">Longitude:</label>
+                  <input type="number" id="longitude-input" name="longitude"><br>
+              
+                  <button type="button" id="submit-button">Add City</button>
+                </form>
               </div>
           <div class="row">
             <div class="col-md-4">
@@ -105,6 +124,7 @@
                   </div>
                 </div>
               </div>
+
     <script src="script.js"></script>
   </body>
 </html>
